@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Wind chill calculator</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css"
+    />
+    <script src="script.js"></script>
+  </head>
+  <body onload="getNums()">
+    <section class="section">
+      <div class="container">
+        <h1 class="title">
+          Wind chill calculator
+        </h1>
+        <p class="subtitle">
+          PRO/g/RAMMING CHALLENGES v.2.0a1<strong> no. 49</strong>
+        </p>
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label"
+                >Temperature
+                <p style="float: right;">
+                  <label class="radio">
+                    <input
+                      type="radio"
+                      id="radio_tempF"
+                      name="temp"
+                      onclick="getNums()"
+                    />
+                    °F
+                  </label>
+                  <label class="radio">
+                    <input
+                      type="radio"
+                      id="radio_tempC"
+                      name="temp"
+                      checked
+                      onclick="getNums()"
+                    />
+                    °C
+                  </label>
+                  <label class="radio">
+                    <input
+                      type="radio"
+                      id="radio_tempK"
+                      name="temp"
+                      onclick="getNums()"
+                    />
+                    K
+                  </label>
+                </p>
+              </label>
+              <div class="control" style="clear: both;">
+                <input
+                  class="input"
+                  id="inputTemp"
+                  inputmode="numeric"
+                  pattern="[0-9]*"
+                  oninput="getNums()"
+                />
+              </div>
+              <div id="errorFirst" style="color: red;"></div>
+              <label class="label"
+                >Wind speed
+                <p style="float: right;">
+                  <label class="radio">
+                    <input
+                      type="radio"
+                      id="radio_velomph"
+                      name="velocity"
+                      onclick="getNums()"
+                    />
+                    mph
+                  </label>
+                  <label class="radio">
+                    <input
+                      type="radio"
+                      id="radio_velokph"
+                      name="velocity"
+                      checked
+                      onclick="getNums()"
+                    />
+                    km/h
+                  </label>
+                  <label class="radio">
+                    <input
+                      type="radio"
+                      id="radio_velomps"
+                      name="velocity"
+                      onclick="getNums()"
+                    />
+                    m/s
+                  </label>
+                </p>
+              </label>
+              <div class="control" style="clear: both;">
+                <input
+                  class="input"
+                  id="inputVelo"
+                  inputmode="numeric"
+                  pattern="[0-9]*"
+                  oninput="getNums()"
+                />
+              </div>
+              <div id="errorSecond" style="color: red;"></div>
+              <i id="note"
+                >The wind chill calculator only works for temperatures at or
+                below 10 °C / 50 °F and wind speeds above 5 km/h / 3 mph.</i
+              >
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label">What temperature you feel</label>
+              <div class="control">
+                <input class="input" type="text" id="feel" readonly />
+              </div>
+            </div>
+          </div>
+          <div class="column"></div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
