@@ -36,6 +36,7 @@ function getNums() {
 
     if (temp > 50 || velo < 3) {
       document.getElementById("note").style.color = "red";
+      document.getElementById("feel").value = "";
     } else {
       document.getElementById("note").style.color = "gray";
       var feel_temp =
