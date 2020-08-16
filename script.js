@@ -1,60 +1,53 @@
+import MESSAGES from "./js/messages.js";
+import calcFeelTemperature from "./js/calcFeelTemperature.js";
+import { temperatureCalculations, windSpeedCalculations, feelTemperatureToString } from "./js/calculations.js";
+import { showError, clearErrors } from "./js/errors.js";
+
 function getNums() {
-  var iTemp = document.getElementById("inputTemp").value;
-  var iVelo = document.getElementById("inputVelo").value;
-  var temp, velo;
+  const inputTemperature = document.getElementById("temperature_input").value;
+  const inputWindSpeed = document.getElementById("wind_speed_input").value;
+  const windSpeedUnit = document.querySelector("input[name=wind_speed]:checked")?.value ?? "mph";
+  const temperatureUnit = document.querySelector("input[name=temperature]:checked")?.value ?? "F";
+  const messages = MESSAGES(temperatureUnit, windSpeedUnit);
+  clearErrors();
+  let hasError = false;
 
-  if (isNaN(iTemp)) {
-    document.getElementById("errorFirst").innerHTML = "Type numbers only.";
-  } else {
-    document.getElementById("errorFirst").innerHTML = "";
+  if (isNaN(inputTemperature)) {
+    hasError = true;
+    showError("temperature_error", messages.WRONG_INPUT);
   }
-  if (isNaN(iVelo)) {
-    document.getElementById("errorSecond").innerHTML = "Type numbers only.";
-  } else {
-    document.getElementById("errorSecond").innerHTML = "";
+  if (isNaN(inputWindSpeed)) {
+    hasError = true;
+    showError("wind_speed_error", messages.WRONG_INPUT);
+  }
+  if (hasError) return;
+
+  const temperature = temperatureCalculations[temperatureUnit](inputTemperature);
+  const windSpeed = windSpeedCalculations[windSpeedUnit](inputWindSpeed);
+
+  if (temperature > 50) {
+    hasError = true;
+    showError("temperature_error", messages.BELOW_TEMPERATURE);
+  }
+  if (windSpeed < 3) {
+    hasError = true;
+    showError("wind_speed_error", messages.ABOVE_WIND_SPEED);
+  }
+  if (hasError) {
+    document.getElementById("feel_input").value = "";
+    document.getElementById("note").classList.add("has_error");
+    return;
   }
 
-  if (!isNaN(iTemp) && !isNaN(iVelo)) {
-    if (radio_tempF.checked) {
-      temp = iTemp;
-    } else if (radio_tempC.checked) {
-      temp = (9 / 5) * iTemp + 32;
-    } else if (radio_tempK.checked) {
-      temp = (9 / 5) * (iTemp - 273.15) + 32;
-    }
-
-    if (radio_velomph.checked) {
-      velo = iVelo;
-    } else if (radio_velokph.checked) {
-      velo = 0.621371 * iVelo;
-    } else if (radio_velomps.checked) {
-      velo = 2.23694 * iVelo;
-    }
-
-    console.log("Temp: " + temp + " Fahrenheit");
-    console.log("Velocity: " + velo + " mph");
-
-    if (temp > 50 || velo < 3) {
-      document.getElementById("note").style.color = "red";
-      document.getElementById("feel").value = "";
-    } else {
-      document.getElementById("note").style.color = "gray";
-      var feel_temp =
-        35.74 +
-        0.6215 * temp -
-        35.75 * Math.pow(velo, 0.16) +
-        0.4275 * temp * Math.pow(velo, 0.16);
-
-      if (radio_tempF.checked) {
-        document.getElementById("feel").value =
-          feel_temp.toFixed(1).toString() + " °F";
-      } else if (radio_tempC.checked) {
-        document.getElementById("feel").value =
-          ((5 / 9) * (feel_temp - 32)).toFixed(1).toString() + " °C";
-      } else if (radio_tempK.checked) {
-        document.getElementById("feel").value =
-          ((5 / 9) * (feel_temp - 32) + 273.16).toFixed(1).toString() + " K";
-      }
-    }
-  }
+  document.getElementById("note").classList.remove("has_error");
+  const feelTemperature = calcFeelTemperature(temperature, windSpeed);
+  const stringifiedFeelTemperature = feelTemperatureToString[temperatureUnit](feelTemperature);
+  document.getElementById("feel_input").value = stringifiedFeelTemperature;
 }
+
+window.addEventListener("load", () => {
+  const inputs = document.querySelectorAll("input");
+  Array.from(inputs).forEach((input) => {
+    input.addEventListener("input", getNums);
+  });
+});

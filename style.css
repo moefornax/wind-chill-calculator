@@ -1,0 +1,85 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap");
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 5rem;
+}
+
+header h2 {
+  font-size: 0.8rem;
+  font-weight: 300;
+}
+
+label {
+  font-weight: 500;
+}
+
+section {
+  display: grid;
+  grid-template-rows: repeat(3, max-content);
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-areas:
+    "temperature feel"
+    "wind ."
+    "note note";
+  grid-gap: 1.5rem;
+  width: 800px;
+}
+
+#temperature_wrapper {
+  grid-area: temperature;
+}
+
+#wind_speed_wrapper {
+  grid-area: wind;
+}
+
+#feel_wrapper {
+  grid-area: feel;
+}
+
+#note_wrapper {
+  grid-area: note;
+}
+
+input[type="text"] {
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid gray;
+  padding: 8px 12px;
+}
+
+input[type="text"]:focus {
+  border-color: pink;
+  outline: none;
+}
+
+.column {
+  display: grid;
+  grid-template-rows: 30px max-content max-content;
+  grid-template-columns: 1fr max-content;
+}
+
+.column input {
+  grid-column: 1 / -1;
+}
+
+.column .error {
+  grid-column: 1 / -1;
+  font-size: 0.8rem;
+  color: red;
+  margin-top: 0.2rem;
+}
